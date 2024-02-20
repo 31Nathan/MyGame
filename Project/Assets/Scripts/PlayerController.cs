@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 input;
 
     private Animator animator;
+    public LayerMask solidObjectsLayer;
 
     private void Awake() {
         animator = GetComponent<Animator>();
@@ -41,10 +42,16 @@ public class PlayerController : MonoBehaviour
                 targetPos.x += input.x;
                 targetPos.y += input.y;
 
-                StartCoroutine(move(targetPos));
+                if (isWakable(targetPos)) {
+                    StartCoroutine(move(targetPos));
+                }
             }
         }
         animator.SetBool("isMoving", isMoving); 
+    }
+
+    private bool isWakable(Vector3 targetPos) {
+        return Physics2D.OverlapCircle(targetPos, 0.1f, solidObjectsLayer) == null;
     }
 
     IEnumerator move(Vector3 targetPos) {
@@ -58,3 +65,4 @@ public class PlayerController : MonoBehaviour
         isMoving = false;
     }
 }
+

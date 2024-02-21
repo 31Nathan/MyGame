@@ -53,7 +53,7 @@ Action Verb (Add, Delete, Fix ...) between brackets + Description of what you ha
 This should look like this:
 
 ```bash
-    git commit -m "[ADD] New rules to the CONTRIBUTING.md #6"
+    git commit -m "[ADD] New rules for the CONTRIBUTING.md #6"
 ```
 
 Please commit frequently to clarify as much as possible what you are doing.

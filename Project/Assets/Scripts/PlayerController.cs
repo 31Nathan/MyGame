@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 
     private Animator animator;
     public LayerMask solidObjectsLayer;
+    public LayerMask interactiblesLayer;
 
     private void Awake() {
         animator = GetComponent<Animator>();
@@ -47,11 +48,15 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        animator.SetBool("isMoving", isMoving); 
+        animator.SetBool("isMoving", isMoving);
+
+        if (Input.GetKeyDown(KeyCode.Z)) {
+            Interact();
+        }
     }
 
     private bool isWakable(Vector3 targetPos) {
-        return Physics2D.OverlapCircle(targetPos, 0.1f, solidObjectsLayer) == null;
+        return Physics2D.OverlapCircle(targetPos, 0.1f, solidObjectsLayer | interactiblesLayer) == null;
     }
 
     IEnumerator move(Vector3 targetPos) {
@@ -63,6 +68,15 @@ public class PlayerController : MonoBehaviour
         transform.position = targetPos;
 
         isMoving = false;
+    }
+
+    void Interact() {
+        var facingDir = new Vector3(animator.GetFloat("moveX"), animator.GetFloat("moveY"));
+        var interactPos = transform.position + facingDir;
+
+        if (Physics2D.OverlapCircle(interactPos, 0.2f, interactiblesLayer) != null) {
+            Debug.Log("There is an interactible objet here !");
+        }
     }
 }
 

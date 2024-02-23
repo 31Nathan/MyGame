@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private void Update()
+    public void HandleUpdate()
     {
         if (!isMoving) {
             input.x = Input.GetAxisRaw("Horizontal");
@@ -74,8 +74,9 @@ public class PlayerController : MonoBehaviour
         var facingDir = new Vector3(animator.GetFloat("moveX"), animator.GetFloat("moveY"));
         var interactPos = transform.position + facingDir;
 
-        if (Physics2D.OverlapCircle(interactPos, 0.2f, interactiblesLayer) != null) {
-            Debug.Log("There is an interactible objet here !");
+        var collider = Physics2D.OverlapCircle(interactPos, 0.2f, interactiblesLayer);
+        if (collider != null) {
+            collider.GetComponent<Interactable>()?.Interact();
         }
     }
 }
